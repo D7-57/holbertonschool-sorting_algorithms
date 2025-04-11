@@ -1,27 +1,28 @@
 #include "sort.h"
 
 /**
- * swap - Swaps two elements in an array
- * @a: Pointer to first element
- * @b: Pointer to second element
+ * swap - Swaps two integers in an array if they are different
+ * @a: Pointer to first integer
+ * @b: Pointer to second integer
  */
 void swap(int *a, int *b)
 {
-	int temp;
-
-	temp = *a;
-	*a = *b;
-	*b = temp;
+	if (*a != *b)
+	{
+		int temp = *a;
+		*a = *b;
+		*b = temp;
+	}
 }
 
 /**
- * lomuto_partition - Partitions the array using Lomuto scheme
- * @array: The array to sort
- * @low: Starting index
- * @high: Ending index
- * @size: Size of the array
+ * lomuto_partition - Partitions an array using the Lomuto scheme
+ * @array: The array to partition
+ * @low: Starting index of the partition
+ * @high: Ending index of the partition (pivot)
+ * @size: Total size of the array (for printing)
  *
- * Return: The index of the pivot after partition
+ * Return: Index where the pivot ends up
  */
 int lomuto_partition(int *array, int low, int high, size_t size)
 {
@@ -34,15 +35,14 @@ int lomuto_partition(int *array, int low, int high, size_t size)
 		if (array[j] < pivot)
 		{
 			i++;
-			if (i != j)
+			if (i != j && array[i] != array[j])
 			{
 				swap(&array[i], &array[j]);
 				print_array(array, size);
 			}
 		}
 	}
-
-	if (i + 1 != high)
+	if ((i + 1) != high && array[i + 1] != array[high])
 	{
 		swap(&array[i + 1], &array[high]);
 		print_array(array, size);
@@ -51,11 +51,11 @@ int lomuto_partition(int *array, int low, int high, size_t size)
 }
 
 /**
- * quick_sort_recursive - Recursively sorts the array
+ * quick_sort_recursive - Recursively sorts subarrays using quick sort
  * @array: The array to sort
  * @low: Starting index
  * @high: Ending index
- * @size: Size of the array
+ * @size: Size of the full array
  */
 void quick_sort_recursive(int *array, int low, int high, size_t size)
 {
@@ -70,15 +70,14 @@ void quick_sort_recursive(int *array, int low, int high, size_t size)
 }
 
 /**
- * quick_sort - Sorts an array of integers in ascending order
- *              using the Quick sort algorithm
+ * quick_sort - Sorts an array of integers using the Quick sort algorithm
  * @array: The array to sort
- * @size: Number of elements in the array
+ * @size: Size of the array
  */
 void quick_sort(int *array, size_t size)
 {
 	if (!array || size < 2)
 		return;
 
-	quick_sort_recursive(array, 0, (int)(size - 1), size);
+	quick_sort_recursive(array, 0, (int)size - 1, size);
 }
